@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API ITZ</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+   <style>
+        body{
+            padding-top: 56px;
+        }
+        .sidebar{
+            position: fixed;
+            top: 56px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .content{
+          margin-left: 250px;
+          padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a href="#" class="navbar-brand">Mi API ITZ</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div id="navbarNav" class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a href="#" class="nav-link">Inicio
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <form id="logoutForm" action="/logout" method="post">
+                        <input type="hidden" name="_token" value="<%= token %>">
+                        <a href="#" onclick="document.getElementById('logoutForm').submit();"
+                         class="nav-link">Logout
+                            <span class="sr-only"></span>
+                        </a>
+                    </form>
+                  
+                </li>
+            </ul>
+
+        </div>
+
+    </nav>
+    <!--Menu lateral-->
+    <div class="sidebar">
+        <h5>Menú</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    Inicio
+                </a>
+            </li>
+            <li class="nav-item">
+                <a target="blank" href="/libreria-docs" class="nav-link active">
+                    <i class="fas fa-book"></i>
+                    Documentación      
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-cogs"></i>
+                    Configuración      
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--contenido principal-->
+    <div class="content">
+        <h2>Bienvenido a mi API ITZ</h2>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="text-center">Perfil del Usuario</h2>
+                        </div>
+                        <div class="card-body">
+                            <% if(message){
+                                %>
+                                <div class="alert alert-warning">
+                                    <%= message %>
+                                </div>
+                             <% } %>
+                             <!--Información del Usuario-->
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="text" class="form-control" name="email" readonly 
+                                    value="<%= email %>" id="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="api_key">API KEY</label>
+                                <input type="text" class="form-control" name="api_key" readonly 
+                                    value="<%= api_key %>" id="api_key">
+                            </div>
+                            <div class="form-group">
+                                <label for="saldo">Saldo</label>
+                                <input type="text" class="form-control" name="saldo" readonly 
+                                    value="<%= saldo %>" id="saldo">
+                            </div>
+
+                            <!--Botón para llamar el modal de recargar saldo-->
+                            <button data-toggle="modal" data-target="#actualizarSaldoModal" 
+                             class="btn btn-primary btn-block">Recargar Saldo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal para actualizar el saldo-->
+    <div id="actualizarSaldoModal" tabindex="-1" role="dialog" 
+     aria-labelledby="actualizarSaldoModalLabel" aria-hidden="true" 
+     class="modal fade">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Actualizar saldo</h5>
+                <button data-dissmin="modal" aria-label="Close" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/agregarSaldo" id="actualizarSaldoForm" method="post">
+                    <input type="hidden" value="<%= token %>" name="_csrf">
+                    <input type="hidden" value="<%= email %>" name="email">
+                    <input type="hidden" value="<%= api_key %>" name="api_key">
+
+                    <div class="form-group">
+                        <label for="">Nuevo Saldo:</label>
+                        <input required type="number" class="form-control" name="nuevoSaldo" id="nuevoSaldo">
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Actualizar Saldo</button>
+                </form>
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
